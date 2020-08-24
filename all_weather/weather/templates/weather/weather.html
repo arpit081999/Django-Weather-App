@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	
+	<style>.bg-link{
+    background-color: #1a52c6;
+}</style>
+</head>
+
+<body>
+    <section class="hero is-black">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title" style="color: rgb(78, 233, 86)">
+                    Wanna Go Somewhere, Let's Check The Weather Outside?
+                </h1>
+            </div>
+        </div>
+    </section>
+    <section class="section" style="background-color: black">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-link">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+						{% if meassage %}
+							<div class="notification {{ meassage_class }}">{{ meassage }} </div>
+						{% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section" style="background-color: black">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    {% for city_weather in weather_data %}
+                    <div class="box" style="background-color: orange">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title" style="color: black">{{ city_weather.city }}</span>
+                                        <br>
+                                        <span class="subtitle" style="color: black">{{ city_weather.temperature }}° C</span>
+                                        <br>
+										<span class="subtitle" style="color: black">{{ city_weather.description }}</span>
+                                    </p>
+                                </div>
+                            </div>
+							<div clsss="media-right">
+								<a href="{% url 'delete_city' city_weather.city %}">
+									<button class="delete"></button>
+								</a>
+							</div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer" style="background-color: black">
+    </footer>
+</body>
+
+</html>
